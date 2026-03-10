@@ -3,12 +3,39 @@
     x:Class="ReiaMalikApp.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:ReiaMalikApp"
+    xmlns:views="clr-namespace:ReiaMalikApp.Views"
     Title="ReiaMalikApp">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    <Shell.Resources>
+        <ResourceDictionary>
+            <Style x:Key="BaseStyle" TargetType="Element">
+                <Setter Property="Shell.TabBarUnselectedColor" Value="#A0A0A0" />
+                <Setter Property="Shell.TabBarTitleColor" Value="#CC0000" />
+                <Setter Property="Shell.TabBarForegroundColor" Value="#CC0000" />
+            </Style>
+            <Style TargetType="TabBar" BasedOn="{StaticResource BaseStyle}" />
+        </ResourceDictionary>
+    </Shell.Resources>
 
+    <Shell.TitleView>
+        <Image Source="pokeball_logo.png" 
+               HeightRequest="40" 
+               HorizontalOptions="Center" 
+               VerticalOptions="Center" />
+    </Shell.TitleView>
+
+    <TabBar>
+        <Tab Title="Accueil" Icon="icon_home.png">
+            <ShellContent ContentTemplate="{DataTemplate views:HomePage}" />
+        </Tab>
+        <Tab Title="Pokédex" Icon="icon_pokedex.png">
+            <ShellContent ContentTemplate="{DataTemplate views:PokedexPage}" />
+        </Tab>
+        <Tab Title="Ajouter" Icon="icon_add.png">
+            <ShellContent ContentTemplate="{DataTemplate views:AddPokemonPage}" />
+        </Tab>
+        <Tab Title="Bonus" Icon="icon_star.png">
+            <ShellContent ContentTemplate="{DataTemplate views:BonusPage}" />
+        </Tab>
+    </TabBar>
 </Shell>
