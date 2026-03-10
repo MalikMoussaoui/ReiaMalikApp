@@ -5,38 +5,43 @@
              xmlns:viewmodels="clr-namespace:ReiaMalikApp.ViewModels"
              x:Class="ReiaMalikApp.Views.PokedexPage"
              x:DataType="viewmodels:PokedexViewModel"
-             Title="Pokédex National">
+             Title="Pokédex National (FR)">
 
-    <Grid>
-        <ActivityIndicator IsRunning="{Binding IsBusy}" 
+    <Grid RowDefinitions="Auto,*">
+
+        <Frame Grid.Row="0" Margin="10" Padding="10" CornerRadius="10" BorderColor="#CC0000" HasShadow="True">
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="15">
+                <Label Text="Génération :" VerticalOptions="Center" FontSize="18" FontAttributes="Bold" />
+                <Picker ItemsSource="{Binding Generations}" 
+                        SelectedItem="{Binding SelectedGeneration}" 
+                        WidthRequest="80" 
+                        HorizontalTextAlignment="Center" />
+            </HorizontalStackLayout>
+        </Frame>
+
+        <ActivityIndicator Grid.Row="1" 
+                           IsRunning="{Binding IsBusy}" 
                            IsVisible="{Binding IsBusy}" 
-                           HorizontalOptions="Center" 
-                           VerticalOptions="Center" 
-                           Color="#CC0000" />
+                           HorizontalOptions="Center" VerticalOptions="Center" Color="#CC0000" />
 
-        <CollectionView ItemsSource="{Binding Pokemons}" 
-                        SelectionMode="None"
+        <CollectionView Grid.Row="1" 
+                        ItemsSource="{Binding Pokemons}" 
+                        SelectionMode="Single"
+                        SelectedItem="{Binding SelectedPokemonItem, Mode=TwoWay}"
                         Margin="10">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:Pokemon">
+
                     <Frame Margin="5" Padding="10" CornerRadius="10" BorderColor="LightGray" HasShadow="True">
                         <HorizontalStackLayout Spacing="20" VerticalOptions="Center">
-
-                            <Image Source="{Binding ImageUrl}" 
-                                   HeightRequest="80" 
-                                   WidthRequest="80" />
-
-                            <Label Text="{Binding Name}" 
-                                   FontSize="20" 
-                                   FontAttributes="Bold" 
-                                   VerticalOptions="Center" 
-                                   TextColor="#333333" />
-
+                            <Image Source="{Binding ImageUrl}" HeightRequest="80" WidthRequest="80" />
+                            <Label Text="{Binding Name}" FontSize="20" FontAttributes="Bold" VerticalOptions="Center" TextColor="#333333" />
                         </HorizontalStackLayout>
                     </Frame>
+
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-    </Grid>
 
+    </Grid>
 </ContentPage>

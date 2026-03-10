@@ -1,62 +1,58 @@
 ﻿using System.Net.Http.Json;
-using System.Text.Json.Serialization;
 using ReiaMalikApp.Models;
 
 namespace ReiaMalikApp.Services;
 
-// Classes techniques pour lire le format spécifique du JSON de PokéAPI
-public class PokeApiResponse
-{
-    [JsonPropertyName("results")]
-    public List<PokeApiResult> Results { get; set; } = new();
-}
-
-public class PokeApiResult
-{
-    [JsonPropertyName("name")]
-    public string Name { get; set; }
-
-    [JsonPropertyName("url")]
-    public string Url { get; set; }
-}
-
-// Le vrai Service qui sera utilisé par l'application
 public class PokeApiService
 {
     private readonly HttpClient _httpClient;
 
     public PokeApiService()
     {
-        // Initialisation du client HTTP
         _httpClient = new HttpClient();
     }
 
-    public async Task<List<Pokemon>> GetPokemonsAsync()
+    public async Task<List<Pokemon>> GetPokemonsByGenerationAsync(int generation)
     {
         var pokemons = new List<Pokemon>();
 
+        // On définit le nombre de Pokémon et le point de départ selon la génération choisie
+        int limit = 151;
+        int offset = 0;
+
+        switch (generation)
+        {
+            case 1: limit = 151; offset = 0; break;
+            case 2: limit = 100; offset = 151; break;
+            case 3: limit = 135; offset = 251; break;
+            case 4: limit = 107; offset = 386; break;
+            case 5: limit = 156; offset = 493; break;
+            case 6: limit = 72; offset = 649; break;
+            case 7: limit = 88; offset = 721; break;
+            case 8: limit = 96; offset = 809; break;
+            case 9: limit = 112; offset = 905; break; // Génération 9 (Paldea)
+        }
+
         try
         {
-            // Appel asynchrone à l'API pour récupérer les 151 premiers Pokémon (Génération 1)
-            var url = "https://pokeapi.co/api/v2/pokemon?limit=151";
+            // On utilise la bonne vieille API mondiale qui ne plante JAMAIS
+            var url = $"https://pokeapi.co/api/v2/pokemon?limit={limit}&offset={offset}";
             var response = await _httpClient.GetFromJsonAsync<PokeApiResponse>(url);
 
             if (response != null && response.Results != null)
             {
-                int id = 1;
+                // L'ID du premier Pokémon de cette génération
+                int id = offset + 1;
+
                 foreach (var item in response.Results)
                 {
-                    // Création de notre objet Pokemon à partir des données de l'API
                     pokemons.Add(new Pokemon
                     {
-                        // On met une majuscule au nom
+                        // Majuscule au nom
                         Name = char.ToUpper(item.Name[0]) + item.Name.Substring(1),
-
-                        // Astuce de dev : on pointe directement vers les artworks officiels via l'ID
+                        // Récupération de l'image haute qualité
                         ImageUrl = $"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/{id}.png",
-
-                        // Description générique pour valider le cahier des charges
-                        Description = $"Voici le profil de {item.Name.ToUpper()}. Un Pokémon de la première génération très puissant en combat !"
+                        Description = $"Pokédex N°{id}\nGénération {generation}"
                     });
                     id++;
                 }
@@ -64,8 +60,7 @@ public class PokeApiService
         }
         catch (Exception ex)
         {
-            // Try/Catch obligatoire pour éviter que l'appli crash si le joueur n'a pas internet
-            System.Diagnostics.Debug.WriteLine($"Erreur lors de l'appel API : {ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"Erreur : {ex.Message}");
         }
 
         return pokemons;
