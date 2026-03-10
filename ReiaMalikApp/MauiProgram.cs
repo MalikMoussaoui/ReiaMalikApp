@@ -18,6 +18,9 @@ namespace ReiaMalikApp
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
+            builder.Services.AddSingleton<ReiaMalikApp.Services.PokeApiService>();
+            builder.Services.AddTransient<ReiaMalikApp.ViewModels.PokedexViewModel>();
+            builder.Services.AddTransient<ReiaMalikApp.Views.PokedexPage>();
 
             return builder.Build();
         }
