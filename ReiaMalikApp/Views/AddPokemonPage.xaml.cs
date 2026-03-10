@@ -1,12 +1,9 @@
-using ReiaMalikApp.ViewModels;
-
 namespace ReiaMalikApp.Views;
 
-public partial class PokemonDetailPage : ContentPage
+public partial class AddPokemonPage : ContentPage
 {
-    public PokemonDetailPage(PokemonDetailViewModel viewModel)
+    public AddPokemonPage()
     {
         InitializeComponent();
-        BindingContext = viewModel;
     }
 }

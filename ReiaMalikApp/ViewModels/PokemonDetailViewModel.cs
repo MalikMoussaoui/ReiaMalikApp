@@ -3,7 +3,7 @@ using ReiaMalikApp.Models;
 
 namespace ReiaMalikApp.ViewModels;
 
-// [QueryProperty] permet de récupérer l'objet envoyé lors de la navigation
+// Cette ligne magique récupère le paramètre "PokemonData" envoyé lors du clic
 [QueryProperty(nameof(SelectedPokemon), "PokemonData")]
 public partial class PokemonDetailViewModel : ObservableObject
 {

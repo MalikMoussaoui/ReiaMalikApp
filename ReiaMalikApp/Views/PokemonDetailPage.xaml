@@ -18,11 +18,18 @@
                    FontAttributes="Bold" 
                    HorizontalOptions="Center" />
 
-            <Frame BackgroundColor="#F0F0F0" CornerRadius="15" Padding="20">
+            <Frame BackgroundColor="#F5F5F5" 
+                   BorderColor="#CC0000"
+                   CornerRadius="15" 
+                   Padding="20"
+                   HasShadow="True">
+
                 <Label Text="{Binding SelectedPokemon.Description}" 
                        FontSize="18" 
+                       TextColor="#333333" 
                        HorizontalOptions="Center" 
-                       HorizontalTextAlignment="Center"/>
+                       HorizontalTextAlignment="Center"
+                       FontAttributes="Italic"/>
             </Frame>
 
         </VerticalStackLayout>
