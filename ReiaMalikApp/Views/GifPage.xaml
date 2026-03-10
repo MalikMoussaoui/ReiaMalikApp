@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ReiaMalikApp.Views.GifPage"
+             Title="Animation Secrète">
+
+    <VerticalStackLayout Spacing="20" VerticalOptions="Center" HorizontalOptions="Center">
+        <Label Text="Pikachu utilise Tonnerre !" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" />
+
+        <Image Source="pikachu.gif" IsAnimationPlaying="True" HeightRequest="250" WidthRequest="250" />
+
+        <Button Text="Retour à l'accueil"
+                Clicked="OnBackButtonClicked"
+                BackgroundColor="#CC0000"
+                TextColor="White"
+                CornerRadius="20"
+                WidthRequest="200"
+                Margin="0,30,0,0"/>
+    </VerticalStackLayout>
+</ContentPage>
