@@ -8,74 +8,82 @@ namespace ReiaMalikApp.ViewModels;
 
 public partial class PokedexViewModel : ObservableObject
 {
-    private readonly PokeApiService _pokeApiService;
+    private readonly PokeApiService _apiService;
+    private List<Pokemon> _allPokemons = new();
 
     [ObservableProperty]
     private ObservableCollection<Pokemon> _pokemons;
 
     [ObservableProperty]
-    private bool _isBusy;
+    private bool _isLoading;
 
-    // --- Gestion des 9 Générations ---
     [ObservableProperty]
-    private int _selectedGeneration;
+    private string _loadingText = "Préparation du Pokédex...";
 
-    public List<int> Generations { get; } = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+    private readonly string[] _funnyPhrases = {
+        "Attrapage des Pokémon sauvages...",
+        "Réveil de Ronflex...",
+        "Nettoyage des Poké Balls...",
+        "Chargement de l'attaque Tonnerre...",
+        "Négociation avec Mewtwo...",
+        "Achat de Potions à la Boutique..."
+    };
 
-    // --- Correction du bug de clic (Sélection robuste) ---
-    [ObservableProperty]
-    private Pokemon _selectedPokemonItem;
-
-    public PokedexViewModel(PokeApiService pokeApiService)
+    public PokedexViewModel(PokeApiService apiService)
     {
-        _pokeApiService = pokeApiService;
+        _apiService = apiService;
         Pokemons = new ObservableCollection<Pokemon>();
-
-        // On assigne discrètement le "1" à la variable cachée pour éviter un double-chargement
-        _selectedGeneration = 1;
-
-        // On force le chargement des Pokémon immédiatement au lancement
-        LoadPokemonsAsync();
-    }
-
-    // Magie du MVVM : Cette méthode s'exécute toute seule quand on change de génération !
-    async partial void OnSelectedGenerationChanged(int value)
-    {
-        await LoadPokemonsAsync();
-    }
-
-    // Cette méthode s'exécute quand on clique sur un Pokémon (corrige ton bug d'écran vide)
-    async partial void OnSelectedPokemonItemChanged(Pokemon value)
-    {
-        if (value != null)
-        {
-            var navigationParameter = new Dictionary<string, object> { { "PokemonData", value } };
-            await Shell.Current.GoToAsync(nameof(Views.PokemonDetailPage), navigationParameter);
-
-            // On remet à null pour pouvoir recliquer sur le même plus tard
-            SelectedPokemonItem = null;
-        }
+        _ = LoadPokemonsAsync(1);
     }
 
     [RelayCommand]
-    public async Task LoadPokemonsAsync()
+    public async Task LoadPokemonsAsync(int generation = 1)
     {
-        if (IsBusy) return;
+        if (IsLoading) return;
 
-        IsBusy = true;
-        try
+        IsLoading = true;
+        Pokemons.Clear();
+        _allPokemons.Clear();
+
+        var cts = new CancellationTokenSource();
+        _ = CycleLoadingTextAsync(cts.Token);
+
+        var loadedPokemons = await _apiService.GetPokemonsByGenerationAsync(generation);
+        _allPokemons = loadedPokemons;
+
+        foreach (var pokemon in _allPokemons)
         {
-            // On charge la génération sélectionnée !
-            var data = await _pokeApiService.GetPokemonsByGenerationAsync(SelectedGeneration);
-            Pokemons.Clear();
-            foreach (var pokemon in data)
-            {
-                Pokemons.Add(pokemon);
-            }
+            Pokemons.Add(pokemon);
         }
-        finally
+
+        cts.Cancel();
+        IsLoading = false;
+    }
+
+    [RelayCommand]
+    public void SearchPokemon(string query)
+    {
+        if (string.IsNullOrWhiteSpace(query))
         {
-            IsBusy = false;
+            Pokemons = new ObservableCollection<Pokemon>(_allPokemons);
+        }
+        else
+        {
+            var filtered = _allPokemons
+                .Where(p => p.Name.ToLower().Contains(query.ToLower()))
+                .ToList();
+            Pokemons = new ObservableCollection<Pokemon>(filtered);
+        }
+    }
+
+    private async Task CycleLoadingTextAsync(CancellationToken token)
+    {
+        int index = 0;
+        while (!token.IsCancellationRequested)
+        {
+            LoadingText = _funnyPhrases[index % _funnyPhrases.Length];
+            index++;
+            try { await Task.Delay(1500, token); } catch { }
         }
     }
 }

@@ -7,11 +7,11 @@ public class PokeApiService
 {
     private readonly HttpClient _httpClient = new HttpClient();
 
-    // 1. CHARGEMENT DE LA LISTE DE BASE
     public async Task<List<Pokemon>> GetPokemonsByGenerationAsync(int generation)
     {
         var pokemons = new List<Pokemon>();
-        int limit = 151; int offset = 0;
+        int limit = 151;
+        int offset = 0;
 
         switch (generation)
         {
@@ -29,63 +29,78 @@ public class PokeApiService
 
             if (response?.Results != null)
             {
+                var tasks = new List<Task<Pokemon>>();
                 int id = offset + 1;
+
                 foreach (var item in response.Results)
                 {
-                    pokemons.Add(new Pokemon
-                    {
-                        Name = char.ToUpper(item.Name[0]) + item.Name.Substring(1),
-                        ImageUrl = $"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/{id}.png"
-                    });
+                    tasks.Add(FetchPokemonBasicInfoAsync(item.Name, item.Url, id));
                     id++;
                 }
+
+                var results = await Task.WhenAll(tasks);
+                pokemons.AddRange(results);
             }
         }
         catch { }
+
         return pokemons;
     }
 
-    // 2. CHARGEMENT DES DÉTAILS COMPLETS (Quand on clique sur un Pokémon)
+    private async Task<Pokemon> FetchPokemonBasicInfoAsync(string name, string url, int id)
+    {
+        var p = new Pokemon
+        {
+            Name = char.ToUpper(name[0]) + name.Substring(1),
+            ImageUrl = $"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/{id}.png"
+        };
+
+        try
+        {
+            var detail = await _httpClient.GetFromJsonAsync<PokeApiDetail>(url);
+            if (detail != null && detail.Types.Count > 0)
+            {
+                p.Type = detail.Types[0].Type.Name.ToUpper();
+            }
+        }
+        catch
+        {
+            p.Type = "???";
+        }
+
+        return p;
+    }
+
     public async Task GetExtraDetailsAsync(Pokemon pokemon)
     {
         try
         {
-            // A. Requête technique (Stats, Poids, Taille, Types)
             var urlDetails = $"https://pokeapi.co/api/v2/pokemon/{pokemon.Name.ToLower()}";
             var details = await _httpClient.GetFromJsonAsync<PokeApiDetail>(urlDetails);
 
             if (details != null)
             {
-                // Types (on gère s'il y a un ou deux types)
                 pokemon.Type = string.Join(" / ", details.Types.Select(t => t.Type.Name.ToUpper()));
-
-                // Stats
                 pokemon.HP = details.Stats[0].Base_Stat.ToString();
                 pokemon.Attack = details.Stats[1].Base_Stat.ToString();
                 pokemon.Defense = details.Stats[2].Base_Stat.ToString();
-
-                // Conversion Poids (hectogrammes -> kg) et Taille (décimètres -> mètres)
                 pokemon.Height = (details.Height / 10.0).ToString("0.0") + " m";
                 pokemon.Weight = (details.Weight / 10.0).ToString("0.0") + " kg";
 
-                // Talent principal
                 if (details.Abilities.Count > 0)
                 {
                     pokemon.Ability = char.ToUpper(details.Abilities[0].Ability.Name[0]) + details.Abilities[0].Ability.Name.Substring(1);
                 }
             }
 
-            // B. Requête pour le Français (Description et Catégorie)
             var urlSpecies = $"https://pokeapi.co/api/v2/pokemon-species/{pokemon.Name.ToLower()}";
             var species = await _httpClient.GetFromJsonAsync<PokeApiSpecies>(urlSpecies);
 
             if (species != null)
             {
-                // Cherche la description en FR
                 var frFlavor = species.FlavorTextEntries.FirstOrDefault(f => f.Language.Name == "fr");
                 if (frFlavor != null)
                 {
-                    // On nettoie les sauts de lignes bizarres de l'API
                     pokemon.Description = frFlavor.FlavorText.Replace("\n", " ").Replace("\f", " ");
                 }
                 else
@@ -93,7 +108,6 @@ public class PokeApiService
                     pokemon.Description = "Description française non disponible.";
                 }
 
-                // Cherche la catégorie en FR (Ex: "Pokémon Graine")
                 var frGenus = species.Genera.FirstOrDefault(g => g.Language.Name == "fr");
                 if (frGenus != null)
                 {
@@ -103,7 +117,7 @@ public class PokeApiService
         }
         catch
         {
-            pokemon.Description = "Erreur de connexion lors du chargement des détails.";
+            pokemon.Description = "Erreur de connexion.";
         }
     }
 }

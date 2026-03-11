@@ -1,47 +1,64 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:models="clr-namespace:ReiaMalikApp.Models"
              xmlns:viewmodels="clr-namespace:ReiaMalikApp.ViewModels"
+             xmlns:models="clr-namespace:ReiaMalikApp.Models"
              x:Class="ReiaMalikApp.Views.PokedexPage"
              x:DataType="viewmodels:PokedexViewModel"
-             Title="Pokédex National (FR)">
+             Title="Pokédex"
+             BackgroundColor="#1A1A1D">
 
-    <Grid RowDefinitions="Auto,*">
+    <Grid>
+        <Grid RowDefinitions="Auto, Auto, *">
 
-        <Frame Grid.Row="0" Margin="10" Padding="10" CornerRadius="10" BorderColor="#CC0000" HasShadow="True">
-            <HorizontalStackLayout HorizontalOptions="Center" Spacing="15">
-                <Label Text="Génération :" VerticalOptions="Center" FontSize="18" FontAttributes="Bold" />
-                <Picker ItemsSource="{Binding Generations}" 
-                        SelectedItem="{Binding SelectedGeneration}" 
-                        WidthRequest="80" 
-                        HorizontalTextAlignment="Center" />
-            </HorizontalStackLayout>
-        </Frame>
+            <Frame Grid.Row="0" Margin="20,10,20,5" CornerRadius="20" BackgroundColor="#2C2C2E" Padding="10,2" BorderColor="Transparent">
+                <Picker x:Name="GenerationPicker" Title="RÉGION" TitleColor="#8E8E93" SelectedIndexChanged="OnGenerationChanged" TextColor="White" FontAttributes="Bold" HorizontalOptions="Center">
+                    <Picker.Items>
+                        <x:String>Kanto (Gen 1)</x:String>
+                        <x:String>Johto (Gen 2)</x:String>
+                        <x:String>Hoenn (Gen 3)</x:String>
+                        <x:String>Sinnoh (Gen 4)</x:String>
+                    </Picker.Items>
+                </Picker>
+            </Frame>
 
-        <ActivityIndicator Grid.Row="1" 
-                           IsRunning="{Binding IsBusy}" 
-                           IsVisible="{Binding IsBusy}" 
-                           HorizontalOptions="Center" VerticalOptions="Center" Color="#CC0000" />
+            <SearchBar Grid.Row="1" 
+                       Placeholder="Rechercher un Pokémon..." 
+                       PlaceholderColor="#8E8E93"
+                       TextColor="White"
+                       BackgroundColor="Transparent"
+                       CancelButtonColor="#E3350D"
+                       SearchCommand="{Binding SearchPokemonCommand}"
+                       SearchCommandParameter="{Binding Text, Source={RelativeSource Self}}"
+                       TextChanged="OnSearchTextChanged"
+                       Margin="10,0"/>
 
-        <CollectionView Grid.Row="1" 
-                        ItemsSource="{Binding Pokemons}" 
-                        SelectionMode="Single"
-                        SelectedItem="{Binding SelectedPokemonItem, Mode=TwoWay}"
-                        Margin="10">
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="models:Pokemon">
+            <CollectionView Grid.Row="2" ItemsSource="{Binding Pokemons}" SelectionMode="Single" SelectionChanged="OnPokemonSelected" Margin="15,10">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" Span="2" HorizontalItemSpacing="15" VerticalItemSpacing="15" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Pokemon">
+                        <Frame CornerRadius="25" BackgroundColor="#2C2C2E" HeightRequest="200" Padding="10" HasShadow="False" BorderColor="Transparent">
+                            <Grid RowDefinitions="*, Auto, Auto">
+                                <Frame Grid.Row="0" BackgroundColor="#3A3A3C" CornerRadius="45" HeightRequest="90" WidthRequest="90" HorizontalOptions="Center" BorderColor="Transparent" Padding="0" HasShadow="False"/>
+                                <Image Grid.Row="0" Source="{Binding ImageUrl}" HeightRequest="85" WidthRequest="85" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                <Label Grid.Row="1" Text="{Binding Name}" FontAttributes="Bold" FontSize="18" TextColor="White" HorizontalOptions="Center" Margin="0,8,0,0"/>
+                                <Frame Grid.Row="2" BackgroundColor="{Binding TypeColor}" CornerRadius="12" Padding="12,3" HorizontalOptions="Center" BorderColor="Transparent" HasShadow="False">
+                                    <Label Text="{Binding Type}" TextColor="White" FontSize="10" FontAttributes="Bold"/>
+                                </Frame>
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
 
-                    <Frame Margin="5" Padding="10" CornerRadius="10" BorderColor="LightGray" HasShadow="True">
-                        <HorizontalStackLayout Spacing="20" VerticalOptions="Center">
-                            <Image Source="{Binding ImageUrl}" HeightRequest="80" WidthRequest="80" />
-                            <Label Text="{Binding Name}" FontSize="20" FontAttributes="Bold" VerticalOptions="Center" TextColor="#333333" />
-                        </HorizontalStackLayout>
-                    </Frame>
-
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-
+        <Grid BackgroundColor="#EE1A1A1D" ZIndex="10" IsVisible="{Binding IsLoading}">
+            <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="25">
+                <Image x:Name="SpinningPokeball" Source="pokeball_logo.png" HeightRequest="100" WidthRequest="100" />
+                <Label Text="{Binding LoadingText}" FontSize="20" FontAttributes="Bold" TextColor="#E3350D" HorizontalOptions="Center" />
+            </VerticalStackLayout>
+        </Grid>
     </Grid>
 </ContentPage>

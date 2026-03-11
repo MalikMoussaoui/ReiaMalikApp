@@ -12,6 +12,6 @@ public partial class PokemonDetailPage : ContentPage
 
     private async void OnBackButtonClicked(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync(".."); // Revient en arrière proprement
+        await Shell.Current.GoToAsync("..");
     }
 }
