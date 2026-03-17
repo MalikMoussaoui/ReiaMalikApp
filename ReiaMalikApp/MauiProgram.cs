@@ -21,10 +21,6 @@ public static class MauiProgram
         builder.Services.AddTransient<ViewModels.PokemonDetailViewModel>();
         builder.Services.AddTransient<Views.PokemonDetailPage>();
 
-#if DEBUG
-        builder.Logging.AddDebug();
-#endif
-
         return builder.Build();
     }
 }

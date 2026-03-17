@@ -40,18 +40,20 @@ public partial class BonusPage : ContentPage
             }
             catch
             {
-                StatusLabel.Text = "Erreur : Active le GPS de ton appareil !";
-                // Mode simulation pour l'émulateur Android si le GPS n'est pas configuré
-                userLocation = new Location(48.8566, 2.3522); // Paris
+                StatusLabel.Text = "Mode Simulation GPS (Paris)";
+                userLocation = new Location(48.8566, 2.3522);
             }
 
             if (userLocation != null)
             {
                 StatusLabel.Text = "Pokémon sauvages détectés !";
 
-                // Centrer la carte OpenStreetMap sur ta position
-                var center = SphericalMercator.FromLonLat(userLocation.Longitude, userLocation.Latitude);
-                PokemonMap.Map.Navigator.NavigateTo(center, PokemonMap.Map.Resolutions[15]);
+                // Correction du MPoint et de la navigation ici :
+                var coords = SphericalMercator.FromLonLat(userLocation.Longitude, userLocation.Latitude);
+                var center = new MPoint(coords.x, coords.y);
+
+                PokemonMap.Map.Navigator.CenterOn(center);
+                PokemonMap.Map.Navigator.ZoomTo(2);
 
                 SpawnPokemons(userLocation);
             }
@@ -69,13 +71,11 @@ public partial class BonusPage : ContentPage
 
         for (int i = 0; i < 5; i++)
         {
-            // Rayon autour de ta position
             double latOffset = (random.NextDouble() * 0.009) - 0.0045;
             double lonOffset = (random.NextDouble() * 0.009) - 0.0045;
 
             var pkmName = _wildNames[random.Next(_wildNames.Length)];
 
-            // Création du Pin façon Mapsui
             var pin = new Pin(PokemonMap)
             {
                 Position = new Position(center.Latitude + latOffset, center.Longitude + lonOffset),
@@ -87,12 +87,11 @@ public partial class BonusPage : ContentPage
             PokemonMap.Pins.Add(pin);
         }
 
-        // Quand tu cliques sur un Pokémon
         PokemonMap.PinClicked += async (s, args) =>
         {
             if (args.Pin != null)
             {
-                args.Handled = true; // Bloque les infos bulles par défaut
+                args.Handled = true;
                 await CatchPokemon(args.Pin, args.Pin.Label);
             }
         };
@@ -105,7 +104,7 @@ public partial class BonusPage : ContentPage
         if (throwPokeball)
         {
             int catchRate = new Random().Next(100);
-            if (catchRate > 30) // 70% de chance d'attraper
+            if (catchRate > 30)
             {
                 await DisplayAlert("Super !", $"Tu as attrapé {name} !", "Génial");
                 PokemonMap.Pins.Remove(pin);
