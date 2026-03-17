@@ -35,6 +35,9 @@ public class Pokemon
         "GHOST" or "SPECTRE" => Color.FromArgb("#735797"),
         "ICE" or "GLACE" => Color.FromArgb("#96D9D6"),
         "DRAGON" => Color.FromArgb("#6F35FC"),
+        "DARK" or "TÉNÈBRES" or "TENEBRES" => Color.FromArgb("#705746"),
+        "STEEL" or "ACIER" => Color.FromArgb("#B7B7CE"),
+        "FLYING" or "VOL" => Color.FromArgb("#A98FF3"),
         _ => Color.FromArgb("#E3350D")
     };
 }
