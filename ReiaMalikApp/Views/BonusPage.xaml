@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:maps="clr-namespace:Microsoft.Maui.Controls.Maps;assembly=Microsoft.Maui.Controls.Maps"
+             xmlns:mapsui="clr-namespace:Mapsui.UI.Maui;assembly=Mapsui.UI.Maui"
              x:Class="ReiaMalikApp.Views.BonusPage"
              Title="Safari Zone"
              BackgroundColor="#1A1A1D">
 
     <Grid>
-        <maps:Map x:Name="PokemonMap" IsShowingUser="True" MapType="Street" />
+        <mapsui:MapView x:Name="PokemonMap" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" />
 
         <Frame VerticalOptions="Start" HorizontalOptions="Center" Margin="0,20,0,0" BackgroundColor="#CC2C2C2E" CornerRadius="20" Padding="20,10" BorderColor="#E3350D" HasShadow="True">
             <Label x:Name="StatusLabel" Text="Recherche du signal GPS..." TextColor="White" FontAttributes="Bold" />
