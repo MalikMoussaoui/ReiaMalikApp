@@ -4,6 +4,8 @@ namespace ReiaMalikApp.Models;
 
 public class Pokemon
 {
+    public static List<Pokemon> GenerationS = new();
+
     public string Name { get; set; }
     public string ImageUrl { get; set; }
     public string Description { get; set; } = "Préparation des données...";
@@ -37,98 +39,15 @@ public class Pokemon
     };
 }
 
-public class PokeApiResponse
-{
-    [JsonPropertyName("results")]
-    public List<PokeApiResult> Results { get; set; } = new();
-}
-
-public class PokeApiResult
-{
-    [JsonPropertyName("name")]
-    public string Name { get; set; }
-
-    [JsonPropertyName("url")]
-    public string Url { get; set; }
-}
-
-public class PokeApiDetail
-{
-    [JsonPropertyName("types")]
-    public List<PokeApiTypeSlot> Types { get; set; }
-
-    [JsonPropertyName("stats")]
-    public List<PokeApiStatSlot> Stats { get; set; }
-
-    [JsonPropertyName("height")]
-    public int Height { get; set; }
-
-    [JsonPropertyName("weight")]
-    public int Weight { get; set; }
-
-    [JsonPropertyName("abilities")]
-    public List<PokeApiAbilitySlot> Abilities { get; set; }
-}
-
-public class PokeApiTypeSlot
-{
-    [JsonPropertyName("type")]
-    public PokeApiType Type { get; set; }
-}
-
-public class PokeApiType
-{
-    [JsonPropertyName("name")]
-    public string Name { get; set; }
-}
-
-public class PokeApiStatSlot
-{
-    [JsonPropertyName("base_stat")]
-    public int Base_Stat { get; set; }
-}
-
-public class PokeApiAbilitySlot
-{
-    [JsonPropertyName("ability")]
-    public PokeApiAbility Ability { get; set; }
-}
-
-public class PokeApiAbility
-{
-    [JsonPropertyName("name")]
-    public string Name { get; set; }
-}
-
-public class PokeApiSpecies
-{
-    [JsonPropertyName("flavor_text_entries")]
-    public List<PokeApiFlavorText> FlavorTextEntries { get; set; }
-
-    [JsonPropertyName("genera")]
-    public List<PokeApiGenus> Genera { get; set; }
-}
-
-public class PokeApiFlavorText
-{
-    [JsonPropertyName("flavor_text")]
-    public string FlavorText { get; set; }
-
-    [JsonPropertyName("language")]
-    public PokeApiLanguage Language { get; set; }
-}
-
-public class PokeApiGenus
-{
-    [JsonPropertyName("genus")]
-    public string Genus { get; set; }
-
-    [JsonPropertyName("language")]
-    public PokeApiLanguage Language { get; set; }
-}
-
-public class PokeApiLanguage
-{
-    [JsonPropertyName("name")]
-    public string Name { get; set; }
-}
+public class PokeApiResponse { [JsonPropertyName("results")] public List<PokeApiResult> Results { get; set; } = new(); }
+public class PokeApiResult { [JsonPropertyName("name")] public string Name { get; set; } [JsonPropertyName("url")] public string Url { get; set; } }
+public class PokeApiDetail { [JsonPropertyName("types")] public List<PokeApiTypeSlot> Types { get; set; } [JsonPropertyName("stats")] public List<PokeApiStatSlot> Stats { get; set; } [JsonPropertyName("height")] public int Height { get; set; } [JsonPropertyName("weight")] public int Weight { get; set; } [JsonPropertyName("abilities")] public List<PokeApiAbilitySlot> Abilities { get; set; } }
+public class PokeApiTypeSlot { [JsonPropertyName("type")] public PokeApiType Type { get; set; } }
+public class PokeApiType { [JsonPropertyName("name")] public string Name { get; set; } }
+public class PokeApiStatSlot { [JsonPropertyName("base_stat")] public int Base_Stat { get; set; } }
+public class PokeApiAbilitySlot { [JsonPropertyName("ability")] public PokeApiAbility Ability { get; set; } }
+public class PokeApiAbility { [JsonPropertyName("name")] public string Name { get; set; } }
+public class PokeApiSpecies { [JsonPropertyName("flavor_text_entries")] public List<PokeApiFlavorText> FlavorTextEntries { get; set; } [JsonPropertyName("genera")] public List<PokeApiGenus> Genera { get; set; } }
+public class PokeApiFlavorText { [JsonPropertyName("flavor_text")] public string FlavorText { get; set; } [JsonPropertyName("language")] public PokeApiLanguage Language { get; set; } }
+public class PokeApiGenus { [JsonPropertyName("genus")] public string Genus { get; set; } [JsonPropertyName("language")] public PokeApiLanguage Language { get; set; } }
+public class PokeApiLanguage { [JsonPropertyName("name")] public string Name { get; set; } }

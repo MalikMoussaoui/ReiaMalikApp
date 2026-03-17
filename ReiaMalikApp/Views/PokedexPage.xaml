@@ -18,20 +18,12 @@
                         <x:String>Johto (Gen 2)</x:String>
                         <x:String>Hoenn (Gen 3)</x:String>
                         <x:String>Sinnoh (Gen 4)</x:String>
+                        <x:String>Génération S (Spécial)</x:String>
                     </Picker.Items>
                 </Picker>
             </Frame>
 
-            <SearchBar Grid.Row="1" 
-                       Placeholder="Rechercher un Pokémon..." 
-                       PlaceholderColor="#8E8E93"
-                       TextColor="White"
-                       BackgroundColor="Transparent"
-                       CancelButtonColor="#E3350D"
-                       SearchCommand="{Binding SearchPokemonCommand}"
-                       SearchCommandParameter="{Binding Text, Source={RelativeSource Self}}"
-                       TextChanged="OnSearchTextChanged"
-                       Margin="10,0"/>
+            <SearchBar Grid.Row="1" Placeholder="Rechercher un Pokémon..." PlaceholderColor="#8E8E93" TextColor="White" BackgroundColor="Transparent" CancelButtonColor="#E3350D" SearchCommand="{Binding SearchPokemonCommand}" SearchCommandParameter="{Binding Text, Source={RelativeSource Self}}" TextChanged="OnSearchTextChanged" Margin="10,0"/>
 
             <CollectionView Grid.Row="2" ItemsSource="{Binding Pokemons}" SelectionMode="Single" SelectionChanged="OnPokemonSelected" Margin="15,10">
                 <CollectionView.ItemsLayout>

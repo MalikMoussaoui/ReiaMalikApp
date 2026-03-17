@@ -21,12 +21,7 @@ public partial class PokedexViewModel : ObservableObject
     private string _loadingText = "Préparation du Pokédex...";
 
     private readonly string[] _funnyPhrases = {
-        "Attrapage des Pokémon sauvages...",
-        "Réveil de Ronflex...",
-        "Nettoyage des Poké Balls...",
-        "Chargement de l'attaque Tonnerre...",
-        "Négociation avec Mewtwo...",
-        "Achat de Potions à la Boutique..."
+        "Attrapage des Pokémon sauvages...", "Réveil de Ronflex...", "Nettoyage des Poké Balls..."
     };
 
     public PokedexViewModel(PokeApiService apiService)
@@ -45,18 +40,25 @@ public partial class PokedexViewModel : ObservableObject
         Pokemons.Clear();
         _allPokemons.Clear();
 
-        var cts = new CancellationTokenSource();
-        _ = CycleLoadingTextAsync(cts.Token);
-
-        var loadedPokemons = await _apiService.GetPokemonsByGenerationAsync(generation);
-        _allPokemons = loadedPokemons;
+        if (generation == 5)
+        {
+            LoadingText = "Ouverture du Coffre S...";
+            await Task.Delay(1000);
+            _allPokemons = new List<Pokemon>(Pokemon.GenerationS);
+        }
+        else
+        {
+            var cts = new CancellationTokenSource();
+            _ = CycleLoadingTextAsync(cts.Token);
+            _allPokemons = await _apiService.GetPokemonsByGenerationAsync(generation);
+            cts.Cancel();
+        }
 
         foreach (var pokemon in _allPokemons)
         {
             Pokemons.Add(pokemon);
         }
 
-        cts.Cancel();
         IsLoading = false;
     }
 
@@ -69,9 +71,7 @@ public partial class PokedexViewModel : ObservableObject
         }
         else
         {
-            var filtered = _allPokemons
-                .Where(p => p.Name.ToLower().Contains(query.ToLower()))
-                .ToList();
+            var filtered = _allPokemons.Where(p => p.Name.ToLower().Contains(query.ToLower())).ToList();
             Pokemons = new ObservableCollection<Pokemon>(filtered);
         }
     }
