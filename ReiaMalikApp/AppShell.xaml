@@ -34,7 +34,7 @@
         <Tab Title="Ajouter" Icon="icon_add.png">
             <ShellContent ContentTemplate="{DataTemplate views:AddPokemonPage}" />
         </Tab>
-        <Tab Title="Bonus" Icon="icon_star.png">
+        <Tab Title="Safari Zone" Icon="icon_star.png">
             <ShellContent ContentTemplate="{DataTemplate views:BonusPage}" />
         </Tab>
     </TabBar>

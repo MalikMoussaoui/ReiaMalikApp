@@ -19,6 +19,7 @@
                         <x:String>Hoenn (Gen 3)</x:String>
                         <x:String>Sinnoh (Gen 4)</x:String>
                         <x:String>Génération S (Spécial)</x:String>
+                        <x:String>Pokémon Capturés 🌍</x:String>
                     </Picker.Items>
                 </Picker>
             </Frame>
@@ -41,15 +42,12 @@
                                 <Label Grid.Row="1" Text="{Binding Name}" FontAttributes="Bold" FontSize="18" TextColor="White" HorizontalOptions="Center" Margin="0,8,0,0"/>
 
                                 <HorizontalStackLayout Grid.Row="2" HorizontalOptions="Center" Spacing="5" Margin="0,5,0,0">
-
                                     <Frame BackgroundColor="{Binding Type1Color}" CornerRadius="12" Padding="10,3" BorderColor="Transparent" HasShadow="False">
                                         <Label Text="{Binding Type1}" TextColor="White" FontSize="9" FontAttributes="Bold"/>
                                     </Frame>
-
                                     <Frame BackgroundColor="{Binding Type2Color}" CornerRadius="12" Padding="10,3" BorderColor="Transparent" HasShadow="False" IsVisible="{Binding HasType2}">
                                         <Label Text="{Binding Type2}" TextColor="White" FontSize="9" FontAttributes="Bold"/>
                                     </Frame>
-
                                 </HorizontalStackLayout>
 
                             </Grid>

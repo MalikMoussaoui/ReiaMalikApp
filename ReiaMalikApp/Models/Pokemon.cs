@@ -5,6 +5,7 @@ namespace ReiaMalikApp.Models;
 public class Pokemon
 {
     public static List<Pokemon> GenerationS = new();
+    public static List<Pokemon> Captured = new(); // <-- TA BOÎTE PC POUR LES CAPTURES GPS
 
     public string Name { get; set; }
     public string ImageUrl { get; set; }
@@ -32,6 +33,7 @@ public class Pokemon
         3 => Color.FromArgb("#A93226"),
         4 => Color.FromArgb("#6C3483"),
         5 => Color.FromArgb("#B9770E"),
+        6 => Color.FromArgb("#2E86C1"), // <-- Couleur bleue pour tes captures !
         _ => Color.FromArgb("#2C3E50")
     };
 

@@ -46,6 +46,12 @@ public partial class PokedexViewModel : ObservableObject
             await Task.Delay(1000);
             _allPokemons = new List<Pokemon>(Pokemon.GenerationS);
         }
+        else if (generation == 6)
+        {
+            LoadingText = "Connexion au PC de Léo...";
+            await Task.Delay(1000);
+            _allPokemons = new List<Pokemon>(Pokemon.Captured);
+        }
         else
         {
             var cts = new CancellationTokenSource();
