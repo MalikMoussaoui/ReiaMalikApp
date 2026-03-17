@@ -102,7 +102,7 @@ public partial class BonusPage : ContentPage
         {
             int catchRate = new Random().Next(100);
 
-            if (catchRate > 30) // 70% de chance d'attraper le Pokémon
+            if (catchRate > 30)
             {
                 await DisplayAlert("Super !", $"Tu as attrapé {name} ! Il a été transféré au Pokédex.", "Génial");
                 PokemonMap.Pins.Remove(pin);
