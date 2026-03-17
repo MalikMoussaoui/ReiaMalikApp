@@ -22,8 +22,37 @@
 
                     <VerticalStackLayout Spacing="5">
                         <Label Text="Type Principal *" TextColor="#8E8E93" FontSize="12" FontAttributes="Bold"/>
-                        <Picker x:Name="TypePicker" Title="Sélectionner un type" TitleColor="#666666" TextColor="White" BackgroundColor="Transparent">
+                        <Picker x:Name="Type1Picker" Title="Sélectionner le 1er type" TitleColor="#666666" TextColor="White" BackgroundColor="Transparent">
                             <Picker.Items>
+                                <x:String>ACIER</x:String>
+                                <x:String>COMBAT</x:String>
+                                <x:String>DRAGON</x:String>
+                                <x:String>EAU</x:String>
+                                <x:String>ELECTRIK</x:String>
+                                <x:String>FÉE</x:String>
+                                <x:String>FEU</x:String>
+                                <x:String>GLACE</x:String>
+                                <x:String>INSECTE</x:String>
+                                <x:String>NORMAL</x:String>
+                                <x:String>PLANTE</x:String>
+                                <x:String>POISON</x:String>
+                                <x:String>PSY</x:String>
+                                <x:String>ROCHE</x:String>
+                                <x:String>SOL</x:String>
+                                <x:String>SPECTRE</x:String>
+                                <x:String>TÉNÈBRES</x:String>
+                                <x:String>VOL</x:String>
+                            </Picker.Items>
+                        </Picker>
+                    </VerticalStackLayout>
+
+                    <BoxView HeightRequest="1" Color="#3A3A3C"/>
+
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Type Secondaire (Optionnel)" TextColor="#8E8E93" FontSize="12" FontAttributes="Bold"/>
+                        <Picker x:Name="Type2Picker" Title="Sélectionner le 2ème type" TitleColor="#666666" TextColor="White" BackgroundColor="Transparent">
+                            <Picker.Items>
+                                <x:String>AUCUN</x:String>
                                 <x:String>ACIER</x:String>
                                 <x:String>COMBAT</x:String>
                                 <x:String>DRAGON</x:String>

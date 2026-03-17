@@ -31,14 +31,27 @@
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:Pokemon">
-                        <Frame CornerRadius="25" BackgroundColor="#2C2C2E" HeightRequest="200" Padding="10" HasShadow="False" BorderColor="Transparent">
+                        <Frame CornerRadius="25" BackgroundColor="#2C2C2E" HeightRequest="210" Padding="10" HasShadow="False" BorderColor="Transparent">
                             <Grid RowDefinitions="*, Auto, Auto">
-                                <Frame Grid.Row="0" BackgroundColor="#3A3A3C" CornerRadius="45" HeightRequest="90" WidthRequest="90" HorizontalOptions="Center" BorderColor="Transparent" Padding="0" HasShadow="False"/>
-                                <Image Grid.Row="0" Source="{Binding ImageUrl}" HeightRequest="85" WidthRequest="85" HorizontalOptions="Center" VerticalOptions="Center"/>
-                                <Label Grid.Row="1" Text="{Binding Name}" FontAttributes="Bold" FontSize="18" TextColor="White" HorizontalOptions="Center" Margin="0,8,0,0"/>
-                                <Frame Grid.Row="2" BackgroundColor="{Binding TypeColor}" CornerRadius="12" Padding="12,3" HorizontalOptions="Center" BorderColor="Transparent" HasShadow="False">
-                                    <Label Text="{Binding Type}" TextColor="White" FontSize="10" FontAttributes="Bold"/>
+
+                                <Frame Grid.Row="0" BackgroundColor="#3A3A3C" CornerRadius="45" HeightRequest="90" WidthRequest="90" HorizontalOptions="Center" VerticalOptions="Center" BorderColor="Transparent" Padding="0" IsClippedToBounds="True" HasShadow="False">
+                                    <Image Source="{Binding ImageUrl}" Aspect="AspectFill" HeightRequest="90" WidthRequest="90" HorizontalOptions="Center" VerticalOptions="Center"/>
                                 </Frame>
+
+                                <Label Grid.Row="1" Text="{Binding Name}" FontAttributes="Bold" FontSize="18" TextColor="White" HorizontalOptions="Center" Margin="0,8,0,0"/>
+
+                                <HorizontalStackLayout Grid.Row="2" HorizontalOptions="Center" Spacing="5" Margin="0,5,0,0">
+
+                                    <Frame BackgroundColor="{Binding Type1Color}" CornerRadius="12" Padding="10,3" BorderColor="Transparent" HasShadow="False">
+                                        <Label Text="{Binding Type1}" TextColor="White" FontSize="9" FontAttributes="Bold"/>
+                                    </Frame>
+
+                                    <Frame BackgroundColor="{Binding Type2Color}" CornerRadius="12" Padding="10,3" BorderColor="Transparent" HasShadow="False" IsVisible="{Binding HasType2}">
+                                        <Label Text="{Binding Type2}" TextColor="White" FontSize="9" FontAttributes="Bold"/>
+                                    </Frame>
+
+                                </HorizontalStackLayout>
+
                             </Grid>
                         </Frame>
                     </DataTemplate>

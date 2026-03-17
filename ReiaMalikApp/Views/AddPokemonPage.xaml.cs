@@ -14,30 +14,45 @@ public partial class AddPokemonPage : ContentPage
         try
         {
             var photo = await MediaPicker.Default.PickPhotoAsync();
-            if (photo != null)
-            {
-                // On met le chemin du fichier local dans l'Entry, l'application saura le lire !
-                ImageUrlEntry.Text = photo.FullPath;
-            }
+            if (photo != null) ImageUrlEntry.Text = photo.FullPath;
         }
-        catch (Exception ex)
-        {
-            await DisplayAlert("Erreur", "Impossible d'ouvrir la galerie photo.", "OK");
-        }
+        catch { await DisplayAlert("Erreur", "Impossible d'ouvrir la galerie.", "OK"); }
     }
 
     private async void OnSaveButtonClicked(object sender, EventArgs e)
     {
-        if (string.IsNullOrWhiteSpace(NameEntry.Text) || TypePicker.SelectedIndex == -1)
+        var pokemonName = NameEntry.Text?.Trim();
+
+        if (string.IsNullOrWhiteSpace(pokemonName) || Type1Picker.SelectedIndex == -1)
         {
-            await DisplayAlert("Erreur", "Veuillez entrer un nom et choisir un type.", "OK");
+            await DisplayAlert("Erreur", "Veuillez entrer un nom et choisir un type principal.", "OK");
             return;
+        }
+
+        if (Pokemon.GenerationS.Any(p => p.Name.Equals(pokemonName, StringComparison.OrdinalIgnoreCase)))
+        {
+            await DisplayAlert("Erreur", $"Le Pokémon '{pokemonName}' existe déjà !", "OK");
+            return;
+        }
+
+        string type2 = "";
+        if (Type2Picker.SelectedIndex != -1 && Type2Picker.SelectedItem.ToString() != "AUCUN")
+        {
+            type2 = Type2Picker.SelectedItem.ToString();
+        }
+
+        string type1 = Type1Picker.SelectedItem.ToString();
+        if (type1 == type2)
+        {
+            type2 = "";
         }
 
         var newPokemon = new Pokemon
         {
-            Name = NameEntry.Text,
-            Type = TypePicker.SelectedItem.ToString(),
+            Name = pokemonName,
+            Type1 = type1,
+            Type2 = type2,
+            Generation = 5,
             ImageUrl = string.IsNullOrWhiteSpace(ImageUrlEntry.Text) ? "pokeball_logo.png" : ImageUrlEntry.Text,
             Description = string.IsNullOrWhiteSpace(DescriptionEditor.Text) ? "Aucune description." : DescriptionEditor.Text,
             HP = string.IsNullOrWhiteSpace(HpEntry.Text) ? "0" : HpEntry.Text,
@@ -49,10 +64,19 @@ public partial class AddPokemonPage : ContentPage
             Ability = "Talent Spécial"
         };
 
-        // On sauvegarde dans la "mémoire" de la Génération S
         Pokemon.GenerationS.Add(newPokemon);
-
         await DisplayAlert("Succès", $"{newPokemon.Name} a rejoint la Génération S !", "Génial");
+
+        NameEntry.Text = string.Empty;
+        Type1Picker.SelectedIndex = -1;
+        Type2Picker.SelectedIndex = -1;
+        ImageUrlEntry.Text = string.Empty;
+        DescriptionEditor.Text = string.Empty;
+        HpEntry.Text = "50";
+        AtkEntry.Text = "50";
+        DefEntry.Text = "50";
+        HeightEntry.Text = "1.0";
+        WeightEntry.Text = "10.0";
 
         await Shell.Current.GoToAsync("..");
     }

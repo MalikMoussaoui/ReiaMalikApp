@@ -5,22 +5,28 @@
              x:Class="ReiaMalikApp.Views.PokemonDetailPage"
              x:DataType="viewmodels:PokemonDetailViewModel"
              Shell.NavBarIsVisible="False"
-             BackgroundColor="{Binding SelectedPokemon.TypeColor}">
+             BackgroundColor="{Binding SelectedPokemon.GenerationColor}">
 
     <Grid RowDefinitions="220, *">
         <VerticalStackLayout Grid.Row="0" Padding="20,50,20,0">
             <Button Text="🡠 Retour" Clicked="OnBackButtonClicked" BackgroundColor="Transparent" TextColor="White" HorizontalOptions="Start" FontAttributes="Bold" FontSize="18" Padding="0"/>
         </VerticalStackLayout>
 
-        <Frame Grid.Row="1" BackgroundColor="White" CornerRadius="45" Margin="0,-40,0,-10" Padding="25,80,25,25" HasShadow="False" BorderColor="Transparent">
+        <Frame Grid.Row="1" BackgroundColor="White" CornerRadius="45" Margin="0,-40,0,-10" Padding="25,110,25,25" HasShadow="False" BorderColor="Transparent">
             <ScrollView VerticalScrollBarVisibility="Never">
                 <VerticalStackLayout Spacing="25">
 
-                    <VerticalStackLayout HorizontalOptions="Center" Spacing="8">
+                    <VerticalStackLayout HorizontalOptions="Center" Spacing="10">
                         <Label Text="{Binding SelectedPokemon.Name}" FontSize="36" FontAttributes="Bold" TextColor="#2C3E50" HorizontalOptions="Center"/>
-                        <Frame BackgroundColor="{Binding SelectedPokemon.TypeColor}" Padding="15,6" CornerRadius="20" HorizontalOptions="Center" BorderColor="Transparent" HasShadow="False">
-                            <Label Text="{Binding SelectedPokemon.Type}" TextColor="White" FontAttributes="Bold" FontSize="14"/>
-                        </Frame>
+
+                        <HorizontalStackLayout HorizontalOptions="Center" Spacing="10">
+                            <Frame BackgroundColor="{Binding SelectedPokemon.Type1Color}" Padding="15,6" CornerRadius="20" BorderColor="Transparent" HasShadow="False">
+                                <Label Text="{Binding SelectedPokemon.Type1}" TextColor="White" FontAttributes="Bold" FontSize="14"/>
+                            </Frame>
+                            <Frame BackgroundColor="{Binding SelectedPokemon.Type2Color}" Padding="15,6" CornerRadius="20" BorderColor="Transparent" HasShadow="False" IsVisible="{Binding SelectedPokemon.HasType2}">
+                                <Label Text="{Binding SelectedPokemon.Type2}" TextColor="White" FontAttributes="Bold" FontSize="14"/>
+                            </Frame>
+                        </HorizontalStackLayout>
                     </VerticalStackLayout>
 
                     <Label Text="{Binding SelectedPokemon.Description}" FontSize="16" TextColor="#666666" LineHeight="1.5" HorizontalTextAlignment="Center" Margin="0,5,0,5"/>
@@ -74,12 +80,8 @@
             </ScrollView>
         </Frame>
 
-        <Image Grid.Row="0" Grid.RowSpan="2" 
-               Source="{Binding SelectedPokemon.ImageUrl}" 
-               HeightRequest="240" 
-               WidthRequest="240" 
-               VerticalOptions="Start" 
-               Margin="0,50,0,0" 
-               HorizontalOptions="Center" />
+        <Frame Grid.Row="0" Grid.RowSpan="2" BackgroundColor="Transparent" CornerRadius="100" HeightRequest="200" WidthRequest="200" VerticalOptions="Start" Margin="0,50,0,0" HorizontalOptions="Center" BorderColor="Transparent" Padding="0" IsClippedToBounds="True" HasShadow="False">
+            <Image Source="{Binding SelectedPokemon.ImageUrl}" Aspect="AspectFill" HeightRequest="200" WidthRequest="200" HorizontalOptions="Center" VerticalOptions="Center"/>
+        </Frame>
     </Grid>
 </ContentPage>
