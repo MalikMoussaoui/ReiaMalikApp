@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net8.0-android</TargetFrameworks>
+		<TargetFrameworks>net10.0-android</TargetFrameworks>
 		<OutputType>Exe</OutputType>
 		<RootNamespace>ReiaMalikApp</RootNamespace>
 		<UseMaui>true</UseMaui>
@@ -17,7 +17,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<MauiIcon Include="Resources\Images\pokeball_logo.png" Color="#1A1A1D" />
+		<MauiIcon Include="Resources\Images\pokeball_logo.png" ForegroundFile="Resources\Images\pokeball_logo.png" Color="#1A1A1D" />
 
 		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
 
@@ -29,8 +29,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
-		<PackageReference Include="Mapsui.Maui" Version="4.1.8" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+		<PackageReference Include="Mapsui.Maui" Version="5.0.2" />
 	</ItemGroup>
 
 </Project>
