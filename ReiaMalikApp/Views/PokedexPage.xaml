@@ -11,7 +11,10 @@
     <Grid>
         <Grid RowDefinitions="Auto, Auto, *">
 
-            <Frame Grid.Row="0" Margin="20,10,20,5" CornerRadius="20" BackgroundColor="#2C2C2E" Padding="10,2" BorderColor="Transparent">
+            <Border Grid.Row="0" Margin="20,10,20,5" BackgroundColor="#2C2C2E" Padding="10,2" Stroke="Transparent">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="20" />
+                </Border.StrokeShape>
                 <Picker x:Name="GenerationPicker" Title="RÉGION" TitleColor="#8E8E93" SelectedIndexChanged="OnGenerationChanged" TextColor="White" FontAttributes="Bold" HorizontalOptions="Center">
                     <Picker.ItemsSource>
                         <x:Array Type="{x:Type x:String}">
@@ -24,7 +27,7 @@
                         </x:Array>
                     </Picker.ItemsSource>
                 </Picker>
-            </Frame>
+            </Border>
 
             <SearchBar Grid.Row="1" Placeholder="Rechercher un Pokémon..." PlaceholderColor="#8E8E93" TextColor="White" BackgroundColor="Transparent" CancelButtonColor="#E3350D" SearchCommand="{Binding SearchPokemonCommand}" SearchCommandParameter="{Binding Text, Source={RelativeSource Self}}" TextChanged="OnSearchTextChanged" Margin="10,0"/>
 
@@ -34,26 +37,38 @@
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:Pokemon">
-                        <Frame CornerRadius="25" BackgroundColor="#2C2C2E" HeightRequest="210" Padding="10" HasShadow="False" BorderColor="Transparent">
+                        <Border BackgroundColor="#2C2C2E" HeightRequest="210" Padding="10" Stroke="Transparent">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="25" />
+                            </Border.StrokeShape>
                             <Grid RowDefinitions="*, Auto, Auto">
 
-                                <Frame Grid.Row="0" BackgroundColor="#3A3A3C" CornerRadius="45" HeightRequest="90" WidthRequest="90" HorizontalOptions="Center" VerticalOptions="Center" BorderColor="Transparent" Padding="0" IsClippedToBounds="True" HasShadow="False">
+                                <Border Grid.Row="0" BackgroundColor="#3A3A3C" HeightRequest="90" WidthRequest="90" HorizontalOptions="Center" VerticalOptions="Center" Stroke="Transparent" Padding="0" IsClippedToBounds="True">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="45" />
+                                    </Border.StrokeShape>
                                     <Image Source="{Binding ImageUrl}" Aspect="AspectFill" HeightRequest="90" WidthRequest="90" HorizontalOptions="Center" VerticalOptions="Center"/>
-                                </Frame>
+                                </Border>
 
                                 <Label Grid.Row="1" Text="{Binding Name}" FontAttributes="Bold" FontSize="18" TextColor="White" HorizontalOptions="Center" Margin="0,8,0,0"/>
 
                                 <HorizontalStackLayout Grid.Row="2" HorizontalOptions="Center" Spacing="5" Margin="0,5,0,0">
-                                    <Frame BackgroundColor="{Binding Type1Color}" CornerRadius="12" Padding="10,3" BorderColor="Transparent" HasShadow="False">
+                                    <Border BackgroundColor="{Binding Type1Color}" Padding="10,3" Stroke="Transparent">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="12" />
+                                        </Border.StrokeShape>
                                         <Label Text="{Binding Type1}" TextColor="White" FontSize="9" FontAttributes="Bold"/>
-                                    </Frame>
-                                    <Frame BackgroundColor="{Binding Type2Color}" CornerRadius="12" Padding="10,3" BorderColor="Transparent" HasShadow="False" IsVisible="{Binding HasType2}">
+                                    </Border>
+                                    <Border BackgroundColor="{Binding Type2Color}" Padding="10,3" Stroke="Transparent" IsVisible="{Binding HasType2}">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="12" />
+                                        </Border.StrokeShape>
                                         <Label Text="{Binding Type2}" TextColor="White" FontSize="9" FontAttributes="Bold"/>
-                                    </Frame>
+                                    </Border>
                                 </HorizontalStackLayout>
 
                             </Grid>
-                        </Frame>
+                        </Border>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
