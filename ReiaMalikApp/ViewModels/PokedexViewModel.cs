@@ -18,10 +18,10 @@ public partial class PokedexViewModel : ObservableObject
     private bool _isLoading;
 
     [ObservableProperty]
-    private string _loadingText = "Préparation du Pokédex...";
+    private string _loadingText = "Chargement du Pokédex...";
 
     private readonly string[] _funnyPhrases = {
-        "Attrapage des Pokémon sauvages...", "Réveil de Ronflex...", "Nettoyage des Poké Balls..."
+        "Toilettage de Couafarel...", "Réveil de Ronflex...", "Nettoyage des Poké Balls...", "Toilettage de Flammiaou...", "Distribution de baies..."
     };
 
     public PokedexViewModel(PokeApiService apiService)
@@ -45,13 +45,13 @@ public partial class PokedexViewModel : ObservableObject
 
             if (generation == 5)
             {
-                LoadingText = "Ouverture du Coffre S...";
+                LoadingText = "Chargement du Pokédex personnalisé...";
                 await Task.Delay(800);
                 if (Pokemon.GenerationS != null) _allPokemons = new List<Pokemon>(Pokemon.GenerationS);
             }
             else if (generation == 6)
             {
-                LoadingText = "Connexion au PC de Léo...";
+                LoadingText = "Connexion au PC...";
                 await Task.Delay(800);
                 if (Pokemon.Captured != null) _allPokemons = new List<Pokemon>(Pokemon.Captured);
             }
