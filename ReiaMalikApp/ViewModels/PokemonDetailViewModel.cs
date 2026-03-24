@@ -4,7 +4,7 @@ using ReiaMalikApp.Services;
 
 namespace ReiaMalikApp.ViewModels;
 
-[QueryProperty(nameof(SelectedPokemon), "PokemonData")]
+[QueryProperty(nameof(SelectedPokemon), "Pokemon")]
 public partial class PokemonDetailViewModel : ObservableObject
 {
     private readonly PokeApiService _apiService;
