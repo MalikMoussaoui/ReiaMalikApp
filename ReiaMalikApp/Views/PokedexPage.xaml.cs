@@ -67,9 +67,9 @@ public partial class PokedexPage : ContentPage
         if (e.CurrentSelection.FirstOrDefault() is Pokemon selectedPokemon)
         {
             var navigationParameter = new Dictionary<string, object>
-            {
-                { "PokemonData", selectedPokemon }
-            };
+        {
+            { "Pokemon", selectedPokemon }
+        };
 
             await Shell.Current.GoToAsync("PokemonDetailPage", true, navigationParameter);
 
