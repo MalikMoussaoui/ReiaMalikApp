@@ -70,10 +70,21 @@
                                        FontSize="16"
                                        HorizontalOptions="Center"
                                        HorizontalTextAlignment="Center" />
-                                <Label Text="{Binding Type1}"
-                                       TextColor="#A0A0A0"
-                                       FontSize="12"
-                                       HorizontalOptions="Center" />
+
+                                <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Spacing="5">
+                                    <Frame BackgroundColor="#3B4CCA" 
+                                           Padding="10,4" 
+                                           CornerRadius="12" 
+                                           HasShadow="False" 
+                                           BorderColor="Transparent">
+                                        <Label Text="{Binding Type1}" 
+                                               TextColor="White" 
+                                               FontSize="11" 
+                                               FontAttributes="Bold" 
+                                               TextTransform="Uppercase" />
+                                    </Frame>
+                                </StackLayout>
+
                             </StackLayout>
                         </Frame>
                     </DataTemplate>

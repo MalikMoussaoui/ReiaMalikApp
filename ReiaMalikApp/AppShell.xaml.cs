@@ -7,6 +7,7 @@ public partial class AppShell : Shell
     public AppShell()
     {
         InitializeComponent();
-        Routing.RegisterRoute(nameof(Views.PokemonDetailPage), typeof(Views.PokemonDetailPage));
+
+        Routing.RegisterRoute("PokemonDetailPage", typeof(Views.PokemonDetailPage));
     }
 }

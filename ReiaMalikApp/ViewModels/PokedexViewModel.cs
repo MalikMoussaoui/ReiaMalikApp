@@ -18,10 +18,10 @@ public partial class PokedexViewModel : ObservableObject
     private bool _isLoading;
 
     [ObservableProperty]
-    private string _loadingText = "Chargement du Pokédex...";
+    private string _loadingText = "Préparation du Pokédex...";
 
     private readonly string[] _funnyPhrases = {
-        "Toilettage de Couafarel...", "Réveil de Ronflex...", "Nettoyage des Poké Balls...", "Brossage de Flammiaou..."
+        "Attrapage des Pokémon sauvages...", "Réveil de Ronflex...", "Nettoyage des Poké Balls..."
     };
 
     public PokedexViewModel(PokeApiService apiService)
@@ -37,35 +37,42 @@ public partial class PokedexViewModel : ObservableObject
         if (IsLoading) return;
 
         IsLoading = true;
-        Pokemons.Clear();
-        _allPokemons.Clear();
 
-        if (generation == 5)
+        try
         {
-            LoadingText = "Connexion au Pokédex régional...";
-            await Task.Delay(1000);
-            _allPokemons = new List<Pokemon>(Pokemon.GenerationS);
-        }
-        else if (generation == 6)
-        {
-            LoadingText = "Connexion au PC...";
-            await Task.Delay(1000);
-            _allPokemons = new List<Pokemon>(Pokemon.Captured);
-        }
-        else
-        {
-            var cts = new CancellationTokenSource();
-            _ = CycleLoadingTextAsync(cts.Token);
-            _allPokemons = await _apiService.GetPokemonsByGenerationAsync(generation);
-            cts.Cancel();
-        }
+            Pokemons.Clear();
+            _allPokemons.Clear();
 
-        foreach (var pokemon in _allPokemons)
-        {
-            Pokemons.Add(pokemon);
-        }
+            if (generation == 5)
+            {
+                LoadingText = "Ouverture du Coffre S...";
+                await Task.Delay(800);
+                if (Pokemon.GenerationS != null) _allPokemons = new List<Pokemon>(Pokemon.GenerationS);
+            }
+            else if (generation == 6)
+            {
+                LoadingText = "Connexion au PC de Léo...";
+                await Task.Delay(800);
+                if (Pokemon.Captured != null) _allPokemons = new List<Pokemon>(Pokemon.Captured);
+            }
+            else
+            {
+                var cts = new CancellationTokenSource();
+                _ = CycleLoadingTextAsync(cts.Token);
+                var results = await _apiService.GetPokemonsByGenerationAsync(generation);
+                if (results != null) _allPokemons = results;
+                cts.Cancel();
+            }
 
-        IsLoading = false;
+            foreach (var pokemon in _allPokemons)
+            {
+                Pokemons.Add(pokemon);
+            }
+        }
+        finally
+        {
+            IsLoading = false;
+        }
     }
 
     [RelayCommand]

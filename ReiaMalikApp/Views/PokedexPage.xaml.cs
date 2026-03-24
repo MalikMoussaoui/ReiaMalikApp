@@ -71,7 +71,7 @@ public partial class PokedexPage : ContentPage
                 { "PokemonData", selectedPokemon }
             };
 
-            await Shell.Current.GoToAsync(nameof(PokemonDetailPage), navigationParameter);
+            await Shell.Current.GoToAsync("PokemonDetailPage", true, navigationParameter);
 
             ((CollectionView)sender).SelectedItem = null;
         }
