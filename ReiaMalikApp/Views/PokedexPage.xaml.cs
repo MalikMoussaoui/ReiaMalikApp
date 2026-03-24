@@ -6,7 +6,7 @@ namespace ReiaMalikApp.Views;
 public partial class PokedexPage : ContentPage
 {
     private readonly PokedexViewModel _viewModel;
-    private bool _isAnimating = false; // <-- LA SÉCURITÉ ANTI-CRASH EST ICI !
+    private bool _isAnimating = false;
 
     public PokedexPage(PokedexViewModel viewModel)
     {
@@ -19,13 +19,11 @@ public partial class PokedexPage : ContentPage
     {
         base.OnAppearing();
 
-        // 1. On empêche de lancer 100 animations en même temps
         if (!_isAnimating)
         {
             AnimatePokeball();
         }
 
-        // 2. Si on était sur la Génération S, on actualise pour voir le nouveau Pokémon !
         if (GenerationPicker.SelectedIndex == 4)
         {
             _ = _viewModel.LoadPokemonsAsync(5);
@@ -34,7 +32,7 @@ public partial class PokedexPage : ContentPage
 
     private async void AnimatePokeball()
     {
-        _isAnimating = true; // On verrouille l'animation
+        _isAnimating = true;
         while (true)
         {
             if (SpinningPokeball != null && _viewModel.IsLoading)
@@ -72,7 +70,9 @@ public partial class PokedexPage : ContentPage
             {
                 { "PokemonData", selectedPokemon }
             };
+
             await Shell.Current.GoToAsync(nameof(PokemonDetailPage), navigationParameter);
+
             ((CollectionView)sender).SelectedItem = null;
         }
     }

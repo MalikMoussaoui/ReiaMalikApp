@@ -26,7 +26,9 @@
 
             <SearchBar Grid.Row="1" Placeholder="Rechercher un Pokémon..." PlaceholderColor="#8E8E93" TextColor="White" BackgroundColor="Transparent" CancelButtonColor="#E3350D" SearchCommand="{Binding SearchPokemonCommand}" SearchCommandParameter="{Binding Text, Source={RelativeSource Self}}" TextChanged="OnSearchTextChanged" Margin="10,0"/>
 
-            <CollectionView Grid.Row="2" ItemsSource="{Binding Pokemons}" SelectionMode="Single" SelectionChanged="OnPokemonSelected" Margin="15,10">
+            <CollectionView ItemsSource="{Binding Pokemons}"
+                SelectionMode="Single"
+                SelectionChanged="OnPokemonSelected">
                 <CollectionView.ItemsLayout>
                     <GridItemsLayout Orientation="Vertical" Span="2" HorizontalItemSpacing="15" VerticalItemSpacing="15" />
                 </CollectionView.ItemsLayout>
