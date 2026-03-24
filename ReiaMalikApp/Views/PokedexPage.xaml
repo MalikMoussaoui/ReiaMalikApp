@@ -1,69 +1,92 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:viewmodels="clr-namespace:ReiaMalikApp.ViewModels"
              xmlns:models="clr-namespace:ReiaMalikApp.Models"
              x:Class="ReiaMalikApp.Views.PokedexPage"
-             x:DataType="viewmodels:PokedexViewModel"
              Title="Pokédex"
              BackgroundColor="#1A1A1D">
 
-    <Grid>
-        <Grid RowDefinitions="Auto, Auto, *">
+    <Grid RowDefinitions="Auto, Auto, *">
 
-            <Frame Grid.Row="0" Margin="20,10,20,5" CornerRadius="20" BackgroundColor="#2C2C2E" Padding="10,2" BorderColor="Transparent">
-                <Picker x:Name="GenerationPicker" Title="RÉGION" TitleColor="#8E8E93" SelectedIndexChanged="OnGenerationChanged" TextColor="White" FontAttributes="Bold" HorizontalOptions="Center">
-                    <Picker.Items>
-                        <x:String>Kanto (Gen 1)</x:String>
-                        <x:String>Johto (Gen 2)</x:String>
-                        <x:String>Hoenn (Gen 3)</x:String>
-                        <x:String>Sinnoh (Gen 4)</x:String>
-                        <x:String>Génération S (Spécial)</x:String>
+        <SearchBar Grid.Row="0"
+                   Placeholder="Rechercher un Pokémon..."
+                   TextChanged="OnSearchTextChanged"
+                   TextColor="White"
+                   PlaceholderColor="#A0A0A0"
+                   BackgroundColor="#2D2D30"
+                   Margin="10,10,10,5" />
+
+        <Frame Grid.Row="1"
+               BackgroundColor="#2D2D30"
+               BorderColor="Transparent"
+               CornerRadius="8"
+               Padding="0"
+               Margin="10,5,10,10"
+               MinimumHeightRequest="60">
+            <Picker x:Name="GenerationPicker"
+                    Title="Sélectionner une génération"
+                    SelectedIndexChanged="OnGenerationChanged"
+                    TextColor="White"
+                    TitleColor="White"
+                    VerticalOptions="Center"
+                    Margin="10,0,10,0">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>Génération 1</x:String>
+                        <x:String>Génération 2</x:String>
+                        <x:String>Génération 3</x:String>
+                        <x:String>Génération 4</x:String>
+                        <x:String>Génération S</x:String>
                         <x:String>Pokémon Capturés 🌍</x:String>
-                    </Picker.Items>
-                </Picker>
-            </Frame>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+        </Frame>
 
-            <SearchBar Grid.Row="1" Placeholder="Rechercher un Pokémon..." PlaceholderColor="#8E8E93" TextColor="White" BackgroundColor="Transparent" CancelButtonColor="#E3350D" SearchCommand="{Binding SearchPokemonCommand}" SearchCommandParameter="{Binding Text, Source={RelativeSource Self}}" TextChanged="OnSearchTextChanged" Margin="10,0"/>
-
+        <Grid Grid.Row="2">
             <CollectionView ItemsSource="{Binding Pokemons}"
-                SelectionMode="Single"
-                SelectionChanged="OnPokemonSelected">
+                            SelectionMode="Single"
+                            SelectionChanged="OnPokemonSelected"
+                            Margin="10,0,10,0">
                 <CollectionView.ItemsLayout>
-                    <GridItemsLayout Orientation="Vertical" Span="2" HorizontalItemSpacing="15" VerticalItemSpacing="15" />
+                    <GridItemsLayout Orientation="Vertical" Span="2" VerticalItemSpacing="15" HorizontalItemSpacing="15" />
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:Pokemon">
-                        <Frame CornerRadius="25" BackgroundColor="#2C2C2E" HeightRequest="210" Padding="10" HasShadow="False" BorderColor="Transparent">
-                            <Grid RowDefinitions="*, Auto, Auto">
-
-                                <Frame Grid.Row="0" BackgroundColor="#3A3A3C" CornerRadius="45" HeightRequest="90" WidthRequest="90" HorizontalOptions="Center" VerticalOptions="Center" BorderColor="Transparent" Padding="0" IsClippedToBounds="True" HasShadow="False">
-                                    <Image Source="{Binding ImageUrl}" Aspect="AspectFill" HeightRequest="90" WidthRequest="90" HorizontalOptions="Center" VerticalOptions="Center"/>
-                                </Frame>
-
-                                <Label Grid.Row="1" Text="{Binding Name}" FontAttributes="Bold" FontSize="18" TextColor="White" HorizontalOptions="Center" Margin="0,8,0,0"/>
-
-                                <HorizontalStackLayout Grid.Row="2" HorizontalOptions="Center" Spacing="5" Margin="0,5,0,0">
-                                    <Frame BackgroundColor="{Binding Type1Color}" CornerRadius="12" Padding="10,3" BorderColor="Transparent" HasShadow="False">
-                                        <Label Text="{Binding Type1}" TextColor="White" FontSize="9" FontAttributes="Bold"/>
-                                    </Frame>
-                                    <Frame BackgroundColor="{Binding Type2Color}" CornerRadius="12" Padding="10,3" BorderColor="Transparent" HasShadow="False" IsVisible="{Binding HasType2}">
-                                        <Label Text="{Binding Type2}" TextColor="White" FontSize="9" FontAttributes="Bold"/>
-                                    </Frame>
-                                </HorizontalStackLayout>
-
-                            </Grid>
+                        <Frame BackgroundColor="#2D2D30"
+                               CornerRadius="12"
+                               Padding="10"
+                               BorderColor="Transparent"
+                               HasShadow="True">
+                            <StackLayout Spacing="5">
+                                <Image Source="{Binding ImageUrl}"
+                                       HeightRequest="100"
+                                       WidthRequest="100"
+                                       Aspect="AspectFit"
+                                       HorizontalOptions="Center" />
+                                <Label Text="{Binding Name}"
+                                       FontAttributes="Bold"
+                                       TextColor="White"
+                                       FontSize="16"
+                                       HorizontalOptions="Center"
+                                       HorizontalTextAlignment="Center" />
+                                <Label Text="{Binding Type1}"
+                                       TextColor="#A0A0A0"
+                                       FontSize="12"
+                                       HorizontalOptions="Center" />
+                            </StackLayout>
                         </Frame>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-        </Grid>
 
-        <Grid BackgroundColor="#EE1A1A1D" ZIndex="10" IsVisible="{Binding IsLoading}">
-            <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="25">
-                <Image x:Name="SpinningPokeball" Source="pokeball_logo.png" HeightRequest="100" WidthRequest="100" />
-                <Label Text="{Binding LoadingText}" FontSize="20" FontAttributes="Bold" TextColor="#E3350D" HorizontalOptions="Center" />
-            </VerticalStackLayout>
+            <Image x:Name="SpinningPokeball"
+                   Source="pokeball_logo.png"
+                   HeightRequest="60"
+                   WidthRequest="60"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   IsVisible="{Binding IsLoading}" />
         </Grid>
     </Grid>
 </ContentPage>
