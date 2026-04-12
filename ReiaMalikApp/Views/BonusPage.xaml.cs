@@ -4,6 +4,7 @@ using ReiaMalikApp.Models;
 using Mapsui;
 using Mapsui.Tiling;
 using System.Net.Http.Json;
+using System.Text.Json.Nodes;
 
 namespace ReiaMalikApp.Views;
 
@@ -163,12 +164,23 @@ public partial class BonusPage : ContentPage
                 PokemonMap.Pins.Remove(pin);
 
                 string imageUrl = pin.Tag as string ?? "pokeball_logo.png";
+                string type1 = "INCONNU";
+
+                try
+                {
+                    var response = await _httpClient.GetFromJsonAsync<JsonObject>($"https://pokeapi.co/api/v2/pokemon/{name.ToLower()}");
+                    if (response?["types"]?[0]?["type"]?["name"] != null)
+                    {
+                        type1 = response["types"][0]["type"]["name"].ToString().ToUpper();
+                    }
+                }
+                catch { }
 
                 Pokemon.Captured.Add(new Pokemon
                 {
                     Name = name,
-                    Type1 = "NORMAL",
-                    Generation = 6,
+                    Type1 = type1,
+                    Generation = 0,
                     ImageUrl = imageUrl,
                     Description = "Attrapé dans la nature avec le GPS.",
                     Category = "Sauvage"
