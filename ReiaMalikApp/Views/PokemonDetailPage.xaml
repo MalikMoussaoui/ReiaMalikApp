@@ -9,7 +9,7 @@
 
     <Grid RowDefinitions="220, *">
         <VerticalStackLayout Grid.Row="0" Padding="20,50,20,0">
-            <Button Text="🡠 Retour" Clicked="OnBackButtonClicked" BackgroundColor="Transparent" TextColor="White" HorizontalOptions="Start" FontAttributes="Bold" FontSize="18" Padding="0"/>
+            <Button Text="Retour" Clicked="OnBackButtonClicked" BackgroundColor="Transparent" TextColor="White" HorizontalOptions="Start" FontAttributes="Bold" FontSize="18" Padding="0"/>
         </VerticalStackLayout>
 
         <Frame Grid.Row="1" BackgroundColor="White" CornerRadius="45" Margin="0,-40,0,-10" Padding="25,110,25,25" HasShadow="False" BorderColor="Transparent">
